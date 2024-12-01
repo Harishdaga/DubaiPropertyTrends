@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dubai House Rent Finder</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #F6E9B2; /* Soft background color */
+            font-family: Arial, Helvetica, sans-serif;
+            color: #0A6847; /* Primary text color */
+        }
+    
+        h1 {
+            font-size: 3rem;
+            color: #0A6847; /* Main heading color */
+            text-align: center;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+        }
+        h2 {
+            font-size: 3rem;
+            color: #0A6847; /* Main heading color */
+            text-align: center;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+        }
+    
+        h1:hover {
+            color: #7ABA78; /* Accent color on hover */
+        }
+    
+        legend {
+            font-size: 2rem;
+            color: #0A6847; /* Matches primary text theme */
+            text-align: center;
+            margin-bottom: 10px;
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+        }
+        legend:hover {
+            color: #7ABA78; /* Accent color on hover */
+        }
+    
+        .form-container {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr); /* Flexible layout */
+            grid-gap: 10px;
+            margin: 0 auto;
+            max-width: 1600px;
+            padding: 10px;
+            background-color: #F3CA52; /* Warm secondary background */
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+    
+        .form-item {
+            grid-column: span 2; /* Default span for form items */
+        }
+    
+        .form-control,
+        select {
+            font-size: 1rem;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #F6E9B2; /* Light input background */
+            color: #0A6847; /* Input text color */
+            border: 1px solid #0A6847; /* Consistent border */
+        }
+    
+        .btn-submit {
+            grid-column: span 12; /* Full-width button */
+            text-align: center;
+        }
+    
+        .btn-submit button {
+            padding: 12px 20px;
+            background-color: #0A6847; /* Button color */
+            color: #F3CA52; /* Button text color */
+            border: none;
+            border-radius: 5px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+    
+        .btn-submit button:hover {
+            background-color: #7ABA78; /* Hover background color */
+            color: #F6E9B2; /* Light hover text color */
+        }
+    </style>
+    
+    
+</head>
+
+<body>
+        <h1>Dubai House Rent Finder</h1>
+        <form action="{{ url_for('predict_datapoint') }}" method="post">
+            <legend>Dubai House Rent Prediction</legend>
+            <div class="form-container">
+                <div class="form-item">
+                    <label class="form-label">Enter Latitude</label>
+                    <input class="form-control" type="number" name="latitude" placeholder="Latitude" min="24.95" max="25.40" step="0.005" required/>
+                </div>
+                <div class="form-item">
+                    <label class="form-label">Enter Longitude</label>
+                    <input class="form-control" type="number" name="longitude" placeholder="Longitude" min="54.95" max="55.55" step="0.005" required/>
+                </div>
+                <div class="form-item">
+                    <label class="form-label">Size in SQFT</label>
+                    <input class="form-control" type="number" name="size_in_sqft" placeholder="Size in SQFT" min="0" max="20000" required/>
+                </div>
+                <div class="form-item">
+                    <label class="form-label">Number of Bedrooms</label>
+                    <input class="form-control" type="number" name="number_of_bedrooms" placeholder="Number of Bedrooms" min="0" max="10" required/>
+                </div>
+                <div class="form-item">
+                    <label class="form-label">Number of Bathrooms</label>
+                    <input class="form-control" type="number" name="number_of_bathrooms" placeholder="Number of Bathrooms" min="0" max="10" required/>
+                </div>
+                <div class="form-item">
+                    <label class="form-label">Quality of Property</label>
+                    <select class="form-control" name="quality" required>
+                        <option selected disabled value="">Select Quality</option>
+                        <option value="Low">Low</option>
+                        <option value="Medium">Medium</option>
+                        <option value="High">High</option>
+                        <option value="Ultra">Ultra</option>
+                    </select>
+                </div>
+                <!-- Repeat similar structure for other fields -->
+                <div class="form-item">
+                    <label class="form-label">Maid Room</label>
+                    <select class="form-control" name="maid_room" required>
+                        <option selected disabled value="">Have Maid Room?</option>
+                        <option value="True">True</option>
+                        <option value="False">False</option>
+                    </select>
+                </div>
+                <div class="form-item">
+                    <label class="form-label">Unfurnished</label>
+                    <select class="form-control" name="unfurnished" required>
+                        <option selected disabled value="">Is Unfurnished?</option>
+                        <option value="True">True</option>
+                        <option value="False">False</option>
+                    </select>
+                </div>
+                <div class="form-item">
+                    <label class="form-label" >Balcony</label>
+                    <select class="form-control" name="balcony" required>
+                        <option selected disabled value="">Having Balcony</option>
+                        <option value="True">True</option>
+                        <option value="False">False</option>
+                    </select>
+                </div>
+                <div class="form-item">
+                    <label class="form-label" >Barbecue Area</label>
+                    <select class="form-control" name="barbecue_area"required>
+                        <option selected disabled value="">Haveing Barbecue Area</option>
+                        <option value="True">True</option>
+                        <option value="False">False</option>
+                    </select>
+                </div>
+                <div class="form-item">
+                    <label class="form-label" >Builtin Wardrobes</label>
+                    <select class="form-control" name="built_in_wardrobes" required >
+                        <option selected disabled value="">Having Builtin Wardrobe</option>
+                        <option value="True">True</option>
+                        <option value="False">False</option>
+                    </select>
+                </div>
+                <div class="form-item">
+                    <label class="form-label" >Central AC</label>
+                    <select class="form-control" name="central_ac" required >
+                        <option selected disabled value="">Having Central AC</option>
+                        <option value="True">True</option>
+                        <option value="False">False</option>
+                    </select>
+                </div>
+                <div class="form-item">
+                    <label class="form-label" >Childrens Play Area</label>
+                    <select class="form-control" name="childrens_play_area" required >
+                        <option selected disabled value="">Having Childrens Play Area</option>
+                        <option value="True">True</option>
+                        <option value="False">False</option>
+                    </select>
+                </div>
+                <div class="form-item">
+                    <label class="form-label" >Childrens Pool</label>
+                    <select class="form-control" name="childrens_pool" required >
+                        <option selected disabled value="">Having Childrens Pool</option>
+                        <option value="True">True</option>
+                        <option value="False">False</option>
+                    </select>
+                </div>
+                <div class="form-item">
+                    <label class="form-label" >Concierge</label>
+                    <select class="form-control" name="concierge" required >
+                        <option selected disabled value="">Having Concierge</option>
+                        <option value="True">True</option>
+                        <option value="False">False</option>
+                    </select>
+                </div>
+                <div class="form-item">
+                    <label class="form-label" >Covered Parking</label>
+                    <select class="form-control" name="covered_parking" required >
+                        <option selected disabled value="">Having Covered Parking</option>
+                        <option value="True">True</option>
+                        <option value="False">False</option>
+                    </select>
+                </div>
+                <div class="form-item">
+                    <label class="form-label" >Kitchen Appliances</label>
+                    <select class="form-control" name="kitchen_appliances" required >
+                        <option selected disabled value="">Having Kichen Appliances</option>
+                        <option value="True">True</option>
+                        <option value="False">False</option>
+                    </select>
+                </div>
+                <div class="form-item">
+                    <label class="form-label" >Lobby In Building</label>
+                    <select class="form-control" name="lobby_in_building" required >
+                        <option selected disabled value="">Having Lobby in Building</option>
+                        <option value="True">True</option>
+                        <option value="False">False</option>
+                    </select>
+                </div>
+                <div class="form-item">
+                    <label class="form-label" >Maid Service</label>
+                    <select class="form-control" name="maid_service" required >
+                        <option selected disabled value="">Having Maid Service</option>
+                        <option value="True">True</option>
+                        <option value="False">False</option>
+                    </select>
+                </div>
+                <div class="form-item">
+                    <label class="form-label" >Networked</label>
+                    <select class="form-control" name="networked" required >
+                        <option selected disabled value="">Having Networked</option>
+                        <option value="True">True</option>
+                        <option value="False">False</option>
+                    </select>
+                </div>
+                <div class="form-item">
+                    <label class="form-label" >Pets Allowed</label>
+                    <select class="form-control" name="pets_allowed" required >
+                        <option selected disabled value="">Is Pet Allowed</option>
+                        <option value="True">True</option>
+                        <option value="False">False</option>
+                    </select>
+                </div>
+                <div class="form-item">
+                    <label class="form-label" >Private Garden</label>
+                    <select class="form-control" name="private_garden" required >
+                        <option selected disabled value="">Having Private Garden</option>
+                        <option value="True">True</option>
+                        <option value="False">False</option>
+                    </select>
+                </div>
+                <div class="form-item">
+                    <label class="form-label" >Private Gym</label>
+                    <select class="form-control" name="private_gym" required >
+                        <option selected disabled value="">Having Private Gym</option>
+                        <option value="True">True</option>
+                        <option value="False">False</option>
+                    </select>
+                </div>
+                <div class="form-item">
+                    <label class="form-label" >Private Jacuzzi</label>
+                    <select class="form-control" name="private_jacuzzi" required >
+                        <option selected disabled value="">Having Private Jacuzzi</option>
+                        <option value="True">True</option>
+                        <option value="False">False</option>
+                    </select>
+                </div>
+                <div class="form-item">
+                    <label class="form-label" >Private Pool</label>
+                    <select class="form-control" name="private_pool" required >
+                        <option selected disabled value="">Having Private Pool</option>
+                        <option value="True">True</option>
+                        <option value="False">False</option>
+                    </select>
+                </div>
+                <div class="form-item">
+                    <label class="form-label" >Security</label>
+                    <select class="form-control" name="security" required >
+                        <option selected disabled value="">Security Guards</option>
+                        <option value="True">True</option>
+                        <option value="False">False</option>
+                    </select>
+                </div>
+                <div class="form-item">
+                    <label class="form-label" >Shared Gym</label>
+                    <select class="form-control" name="shared_gym" required >
+                        <option selected disabled value="">Having Shared Gym</option>
+                        <option value="True">True</option>
+                        <option value="False">False</option>
+                    </select>
+                </div>
+                <div class="form-item">
+                    <label class="form-label" >Shared Pool</label>
+                    <select class="form-control" name="shared_pool" required >
+                        <option selected disabled value="">Having Shared Pool</option>
+                        <option value="True">True</option>
+                        <option value="False">False</option>
+                    </select>
+                </div>
+                <div class="form-item">
+                    <label class="form-label" >Shared Spa</label>
+                    <select class="form-control" name="shared_spa" required >
+                        <option selected disabled value="">Having Shared Spa</option>
+                        <option value="True">True</option>
+                        <option value="False">False</option>
+                    </select>
+                </div>
+                <div class="form-item">
+                    <label class="form-label" >Study</label>
+                    <select class="form-control" name="study" required >
+                        <option selected disabled value="">Having Study Room</option>
+                        <option value="True">True</option>
+                        <option value="False">False</option>
+                    </select>
+                </div>
+                <div class="form-item">
+                    <label class="form-label" >Vastu Compliant</label>
+                    <select class="form-control" name="vastu_compliant" required >
+                        <option selected disabled value="">Having Vastu Compliant</option>
+                        <option value="True">True</option>
+                        <option value="False">False</option>
+                    </select>
+                </div>
+                <div class="form-item">
+                    <label class="form-label" >View of Landmark</label>
+                    <select class="form-control" name="view_of_landmark" required >
+                        <option selected disabled value="">Having Any View of Landmark</option>
+                        <option value="True">True</option>
+                        <option value="False">False</option>
+                    </select>
+                </div>
+                <div class="form-item">
+                    <label class="form-label" >View of Water</label>
+                    <select class="form-control" name="view_of_water" required >
+                        <option selected disabled value="">Having Any View of Water</option>
+                        <option value="True">True</option>
+                        <option value="False">False</option>
+                    </select>
+                </div>
+                <div class="form-item">
+                    <label class="form-label" >Walk in Closet</label>
+                    <select class="form-control" name="walk_in_closet" required >
+                        <option selected disabled value="">Having Walk in Closet</option>
+                        <option value="True">True</option>
+                        <option value="False">False</option>
+                    </select>
+                </div>
+
+                <div class="btn-submit">
+                    <button type="submit">Predict Rent</button>
+                </div>
+            </div>
+        </form>
+        <h2>
+            {{results}}
+         </h2>
+</body>
+
+</html>
